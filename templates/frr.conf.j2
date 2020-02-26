@@ -1,0 +1,18 @@
+hostname {{ inventory_hostname }}
+!
+!interface lo
+! ip ospf area 0 8.8.4.4
+! ip ospf area 0 8.8.8.8
+!!
+{% for interface in ansible_interfaces | sort %}
+interface {{ interface }}
+ ip ospf area 0
+!
+{% endfor %}
+router ospf
+ ospf router-id {{ ansible_ssh_host }}
+ passive-interface default
+{% for interface in ansible_interfaces | sort %}
+ no passive-interface {{ interface }}
+{% endfor %}
+!

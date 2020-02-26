@@ -1,0 +1,7 @@
+---
+- name: "Restart frr"
+  systemd:
+    daemon_reload: "yes"
+    name:          "frr.service"
+    state:         "restarted"
+  listen: "frr-restart"
