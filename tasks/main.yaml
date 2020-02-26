@@ -1,0 +1,17 @@
+---
+- name: "Update templates"
+  template:
+    src:  "{{ item.src | default((item.dest | basename ()) + '.j2')}}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode | default('0644') }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default(item.owner | default('root')) }}"
+  with_items:
+    - dest: "/etc/frr/daemons"
+    - dest: "/etc/frr/frr.conf"
+      owner: "frr"
+      mode: "0640"
+  when:
+    - "ospf is defined"
+  tags:
+    - "ospf"
