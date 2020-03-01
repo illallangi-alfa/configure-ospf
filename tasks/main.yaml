@@ -13,8 +13,6 @@
       owner: "frr"
       mode: "0640"
   notify: "frr-restart"
-  when:
-    - "ospf is defined"
   tags:
     - "ospf"
 - name: "Start and enable frr"
@@ -23,7 +21,5 @@
     state: "started"
     enabled: "yes"
     daemon_reload: "yes"
-  when:
-    - "ospf is defined"
   tags:
     - "ospf"
