@@ -1,0 +1,2 @@
+---
+ospf_interface_query: "{interfaces:[?starts_with(@, 'bond')||starts_with(@, 'enp')||starts_with(@, 'lo')]}.interfaces"
