@@ -1,14 +1,21 @@
 hostname {{ inventory_hostname }}
-!
 {% for interface in ansible_interfaces | to_json | from_json | json_query(ospf_interface_query) | sort %}
+{% if 'ipv4' in hostvars[inventory_hostname]['ansible_' + interface] %}
+!
 interface {{ interface }}
  ip ospf area 0
-!
+{% if hostvars[inventory_hostname]['ansible_' + interface]['ipv4']['netmask'] == '255.255.255.255' %}
+ ip ospf network point-to-point
+{% endif %}
+{% endif %}
 {% endfor %}
+!
 router ospf
  ospf router-id {{ ansible_ssh_host }}
  passive-interface default
 {% for interface in ansible_interfaces | to_json | from_json | json_query(ospf_interface_query) | sort %}
+{% if 'ipv4' in hostvars[inventory_hostname]['ansible_' + interface] %}
  no passive-interface {{ interface }}
+{% endif %}
 {% endfor %}
 !
